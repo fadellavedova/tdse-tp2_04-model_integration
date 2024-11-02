@@ -62,7 +62,7 @@
 
 /********************** internal data declaration ****************************/
 task_system_dta_t task_system_dta =
-	{DEL_SYS_XX_MIN, ST_SYS_XX_IDLE, EV_SYS_XX_IDLE, false};
+	{DEL_SYS_XX_MIN, ST_SYS_XX_WAITING, EV_SYS_XX_YSEMARCHO /*NO HACE NADA*/, false};
 
 #define SYSTEM_DTA_QTY	(sizeof(task_system_dta)/sizeof(task_system_dta_t))
 
@@ -154,28 +154,112 @@ void task_system_update(void *parameters)
 
 		switch (p_task_system_dta->state)
 		{
-			case ST_SYS_XX_IDLE:
+			case ST_SYS_XX_WAITING:
 
-				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_ACTIVE == p_task_system_dta->event))
+				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_LLEGA == p_task_system_dta->event))
 				{
 					p_task_system_dta->flag = false;
-					put_event_task_actuator(EV_LED_XX_ON, ID_LED_A);
-					p_task_system_dta->state = ST_SYS_XX_ACTIVE;
+					p_task_system_dta->state = ST_SYS_XX_HAYAUTO;
 				}
 
 				break;
 
-			case ST_SYS_XX_ACTIVE:
+			case ST_SYS_XX_HAYAUTO:
 
-				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_IDLE == p_task_system_dta->event))
+				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_BTN == p_task_system_dta->event))
 				{
 					p_task_system_dta->flag = false;
 					put_event_task_actuator(EV_LED_XX_OFF, ID_LED_A);
-					p_task_system_dta->state = ST_SYS_XX_IDLE;
+					p_task_system_dta->state = ST_SYS_XX_PRINTIKET;
+				}
+				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_YSEMARCHO == p_task_system_dta->event))
+				{
+					p_task_system_dta->flag = false;
+					p_task_system_dta->state = ST_SYS_XX_WAITING;
 				}
 
 				break;
 
+			case ST_SYS_XX_PRINTIKET:
+
+				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_PRINTED == p_task_system_dta->event))
+				{
+					p_task_system_dta->flag = false;
+					p_task_system_dta->state = ST_SYS_XX_PRINTED;
+				}
+
+				break;
+			case ST_SYS_XX_PRINTED:
+
+				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_RETIRA == p_task_system_dta->event))
+				{
+					p_task_system_dta->flag = false;
+					put_event_task_actuator(EV_LED_XX_OFF, ID_LED_A);
+					p_task_system_dta->state = ST_SYS_XX_ABRIENDO;
+				}
+				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_YSEMARCHO == p_task_system_dta->event))
+				{
+					p_task_system_dta->flag = false;
+					p_task_system_dta->state = ST_SYS_XX_WAITING;
+				}
+
+				break;
+			case ST_SYS_XX_ABRIENDO:
+
+				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_VERTICAL == p_task_system_dta->event))
+				{
+					p_task_system_dta->flag = false;
+					put_event_task_actuator(EV_LED_XX_OFF, ID_LED_A);
+					p_task_system_dta->tick = DEL_SYS_XX_MED;
+					p_task_system_dta->state = ST_SYS_XX_VERTICAL;
+				}
+
+				break;
+
+			case ST_SYS_XX_VERTICAL:
+
+				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_PASANDO == p_task_system_dta->event))
+				{
+					p_task_system_dta->flag = false;
+					p_task_system_dta->state = ST_SYS_XX_PASANDO;
+				}
+				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_YSEMARCHO == p_task_system_dta->event) && p_task_system_dta->tick>0)
+				{
+					p_task_system_dta->flag = false;
+					put_event_task_actuator(EV_LED_XX_OFF, ID_LED_A);
+					p_task_system_dta->tick--;
+					p_task_system_dta->state = ST_SYS_XX_VERTICAL;
+				}
+				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_YSEMARCHO == p_task_system_dta->event) && p_task_system_dta->tick==0)
+				{
+					p_task_system_dta->flag = false;
+					put_event_task_actuator(EV_LED_XX_OFF, ID_LED_A);
+					p_task_system_dta->state = ST_SYS_XX_CERRANDO;
+				}
+
+				break;
+
+			case ST_SYS_XX_PASANDO:
+
+				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_PASO == p_task_system_dta->event))
+				{
+					p_task_system_dta->flag = false;
+					put_event_task_actuator(EV_LED_XX_OFF, ID_LED_A);
+					p_task_system_dta->state = ST_SYS_XX_CERRANDO;
+				}
+
+				break;
+
+			case ST_SYS_XX_CERRANDO:
+
+				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_CERRO == p_task_system_dta->event))
+				{
+					p_task_system_dta->flag = false;
+					put_event_task_actuator(EV_LED_XX_OFF, ID_LED_A);
+					p_task_system_dta->state = ST_SYS_XX_WAITING;
+				}
+
+				break;
 			default:
 
 				break;

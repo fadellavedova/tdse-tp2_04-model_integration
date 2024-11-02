@@ -62,12 +62,27 @@ extern "C" {
  */
 
 /* Events to excite Task System */
-typedef enum task_system_ev {EV_SYS_XX_IDLE,
-							 EV_SYS_XX_ACTIVE} task_system_ev_t;
+typedef enum task_system_ev {EV_SYS_XX_LLEGA,
+							 EV_SYS_XX_BTN,
+							 EV_SYS_XX_YSEMARCHO,
+							 EV_SYS_XX_PRINTED,
+							 EV_SYS_XX_RETIRA,
+							 EV_SYS_XX_VERTICAL,
+							 EV_SYS_XX_PASANDO,
+							 EV_SYS_XX_PASO,
+							 EV_SYS_XX_CERRO
+} task_system_ev_t;
 
 /* State of Task System */
-typedef enum task_system_st {ST_SYS_XX_IDLE,
-							 ST_SYS_XX_ACTIVE} task_system_st_t;
+typedef enum task_system_st {ST_SYS_XX_WAITING,
+							 ST_SYS_XX_HAYAUTO,
+							 ST_SYS_XX_PRINTIKET,
+							 ST_SYS_XX_PRINTED,
+							 ST_SYS_XX_ABRIENDO,
+							 ST_SYS_XX_VERTICAL,
+							 ST_SYS_XX_PASANDO,
+							 ST_SYS_XX_CERRANDO
+} task_system_st_t;
 
 typedef struct
 {
