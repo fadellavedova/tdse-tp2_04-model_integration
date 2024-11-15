@@ -70,7 +70,9 @@ typedef enum task_system_ev {EV_SYS_XX_LLEGA,
 							 EV_SYS_XX_VERTICAL,
 							 EV_SYS_XX_PASANDO,
 							 EV_SYS_XX_PASO,
-							 EV_SYS_XX_CERRO
+							 EV_SYS_XX_CERRO,
+							 EV_SYS_XX_IDLE,
+							 EV_SYS_XX_ACTIVE
 } task_system_ev_t;
 
 /* State of Task System */
@@ -81,7 +83,9 @@ typedef enum task_system_st {ST_SYS_XX_WAITING,
 							 ST_SYS_XX_ABRIENDO,
 							 ST_SYS_XX_VERTICAL,
 							 ST_SYS_XX_PASANDO,
-							 ST_SYS_XX_CERRANDO
+							 ST_SYS_XX_CERRANDO,
+							 ST_SYS_XX_IDLE,
+							 ST_SYS_XX_ACTIVE
 } task_system_st_t;
 
 typedef struct

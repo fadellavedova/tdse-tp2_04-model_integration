@@ -150,8 +150,8 @@ void task_system_update(void *parameters)
 		{
 			p_task_system_dta->flag = true;
 			p_task_system_dta->event = get_event_task_system();
-		}
 
+		}
 		switch (p_task_system_dta->state)
 		{
 			case ST_SYS_XX_WAITING:
@@ -159,7 +159,9 @@ void task_system_update(void *parameters)
 				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_LLEGA == p_task_system_dta->event))
 				{
 					p_task_system_dta->flag = false;
+					//put_event_task_actuator(EV_LED_XX_ON, ID_LED_A);
 					p_task_system_dta->state = ST_SYS_XX_HAYAUTO;
+					printf("hay auto\n");
 				}
 
 				break;
@@ -169,13 +171,15 @@ void task_system_update(void *parameters)
 				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_BTN == p_task_system_dta->event))
 				{
 					p_task_system_dta->flag = false;
-					put_event_task_actuator(EV_LED_XX_OFF, ID_LED_A);
+					put_event_task_actuator(EV_LED_XX_ON, ID_LED_01);
 					p_task_system_dta->state = ST_SYS_XX_PRINTIKET;
+					printf("print ticket\n");
 				}
 				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_YSEMARCHO == p_task_system_dta->event))
 				{
 					p_task_system_dta->flag = false;
 					p_task_system_dta->state = ST_SYS_XX_WAITING;
+					printf("espero \n");
 				}
 
 				break;
@@ -185,7 +189,9 @@ void task_system_update(void *parameters)
 				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_PRINTED == p_task_system_dta->event))
 				{
 					p_task_system_dta->flag = false;
+					put_event_task_actuator(EV_LED_XX_OFF, ID_LED_01);
 					p_task_system_dta->state = ST_SYS_XX_PRINTED;
+					printf("impreso\n");
 				}
 
 				break;
@@ -194,13 +200,14 @@ void task_system_update(void *parameters)
 				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_RETIRA == p_task_system_dta->event))
 				{
 					p_task_system_dta->flag = false;
-					put_event_task_actuator(EV_LED_XX_OFF, ID_LED_A);
+
 					p_task_system_dta->state = ST_SYS_XX_ABRIENDO;
 				}
 				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_YSEMARCHO == p_task_system_dta->event))
 				{
 					p_task_system_dta->flag = false;
 					p_task_system_dta->state = ST_SYS_XX_WAITING;
+					printf("espero \n");
 				}
 
 				break;

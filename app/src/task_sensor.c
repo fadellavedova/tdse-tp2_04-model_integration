@@ -61,7 +61,7 @@
 
 /********************** internal data declaration ****************************/
 const task_sensor_cfg_t task_sensor_cfg_list[] = {
-	{ID_BTN_B,  BTN_B_PORT,  BTN_B_PIN,  BTN_B_PRESSED, DEL_BTN_XX_MAX,
+	{ID_BTN_A,  BTN_A_PORT,  BTN_A_PIN,  BTN_A_PRESSED, DEL_BTN_XX_MAX,
 	 EV_SYS_XX_IDLE,  EV_SYS_XX_ACTIVE},
 	{ID_BTN_01,  BTN_01_PORT,  BTN_01_PIN,  BTN_01_PRESSED, DEL_BTN_XX_MAX,
 			 EV_SYS_XX_LLEGA,  EV_SYS_XX_YSEMARCHO},
@@ -190,9 +190,8 @@ void task_sensor_update(void *parameters)
 
 					if (EV_BTN_XX_DOWN == p_task_sensor_dta->event)
 					{
-						put_event_task_system(p_task_sensor_cfg->signal_down);
 						p_task_sensor_dta->state = ST_BTN_XX_FALLING;
-						p_task_sensor_dta->tick = DEL_BTN_XX_MED;
+						p_task_sensor_dta->tick = DEL_BTN_XX_MAX;
 					}
 
 					break;
@@ -209,6 +208,7 @@ void task_sensor_update(void *parameters)
 					if (EV_BTN_XX_DOWN == p_task_sensor_dta->event && p_task_sensor_dta->tick == 0)
 					{
 						p_task_sensor_dta->state = ST_BTN_XX_DOWN;
+						put_event_task_system(p_task_sensor_cfg->signal_up);
 					}
 					if (EV_BTN_XX_UP == p_task_sensor_dta->event && p_task_sensor_dta->tick == 0)
 					{
@@ -221,9 +221,9 @@ void task_sensor_update(void *parameters)
 
 					if (EV_BTN_XX_UP == p_task_sensor_dta->event)
 					{
-						put_event_task_system(p_task_sensor_cfg->signal_up);
+
 						p_task_sensor_dta->state = ST_BTN_XX_RISING;
-						p_task_sensor_dta->tick = DEL_BTN_XX_MED;
+						p_task_sensor_dta->tick = DEL_BTN_XX_MAX;
 					}
 
 					break;
@@ -244,6 +244,7 @@ void task_sensor_update(void *parameters)
 					if (EV_BTN_XX_UP == p_task_sensor_dta->event && p_task_sensor_dta->tick == 0)
 					{
 					p_task_sensor_dta->state = ST_BTN_XX_UP;
+					put_event_task_system(p_task_sensor_cfg->signal_down);
 					}
 					break;
 
